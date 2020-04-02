@@ -1,11 +1,18 @@
 import React from 'react';
+import {
+    BrowserRouter as Router,
+    Switch,
+    Route,
+    Link
+  } from "react-router-dom";
 
 export default function Header(props){
     return(
+        
         <div className='header'>
             <div className='grid'>
                 <div className='start'>
-                    <a href='#'>Home</a>
+                <Link to="/">Home</Link>
                 </div>
                 <div className='end'>
                 {props.nickname?(
@@ -15,7 +22,7 @@ export default function Header(props){
                     </span>
                     ):(
                         <React.Fragment>
-                            <a href='#'>Login</a>
+                            <Link to="/Login">Login</Link>
                             <a href='#'>Register</a>
                         </React.Fragment>
                     )}
@@ -24,5 +31,6 @@ export default function Header(props){
     </div>
          
   
-</div>)
+</div>
+)
 }
