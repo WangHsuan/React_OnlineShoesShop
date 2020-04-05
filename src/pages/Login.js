@@ -2,22 +2,27 @@ import React from 'react';
 
 class Login extends React.Component {
 
-    emailRef = React.createRef();
-    passwordRef = React.createRef();
+    state = {
+        email:'',
+        password:''
+    }
+   
     handleSubmit = event =>{
         event.preventDefault();
         //get value
-        console.log(this.emailRef.current.value);
-        //console.log(event.target.email.value);
-        const formData = {
-            email:this.emailRef.current.value,
-            password:this.passwordRef.current.value
-        }
-        console.log(formData);
+        console.log(this.state);
         //login
 
         //redirect
         this.props.history.push('/')
+    }
+
+    handleChange = (e) => {
+        e.preventDefault();   
+        this.setState({
+            [e.target.name] : e.target.value
+        })
+        
     }
 
     render(){
@@ -27,13 +32,27 @@ class Login extends React.Component {
               <div className="field">
                 <label className="label">Email</label>
                 <div className="control">
-                  <input className="input" type="text" placeholder="Email" ref={this.emailRef} name='email' />
+                  <input 
+                     className="input"
+                     type="text" 
+                     placeholder="Email"  
+                     name='email'
+                     value={this.state.email}
+                     onChange={this.handleChange}
+                     />
                 </div>
               </div>
               <div className="field">
               <label className="label">Password</label>
               <div className="control">
-                <input className="input" type="password" placeholder="Password" ref={this.passwordRef} />
+                <input 
+                    className="input" 
+                    type="password" 
+                    placeholder="Password"
+                    name='password'
+                    value={this.state.password}
+                    onChange={this.handleChange}
+                      />
               </div>
             </div>
             <div className="control">
