@@ -3,7 +3,8 @@ import axios from '../commons/axios';
 import Product from './Product';
 import ToolBox from './ToolBox';
 import {CSSTransition, TransitionGroup} from 'react-transition-group';
-import Panel from './Panel'
+import Panel from './Panel';
+import AddInventory from './AddInventory';
 
 
 
@@ -39,7 +40,12 @@ export default class Products extends React.Component{
        
     }
     toAdd = ()=>{
-        Panel.open();
+        Panel.open({
+            component:AddInventory,
+            callback: data => {
+                console.log('Products: ',data);
+            }
+        });
     }
     render(){
         return (

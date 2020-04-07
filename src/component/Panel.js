@@ -3,13 +3,24 @@ import {render} from 'react-dom'
 
 class Panel extends React.Component{
     state={
-        active:false
+        active:false,
+        component:null,
+        callback: () => {}
     }
-    open = () =>{
-        this.setState({active:true})
+    open = options =>{
+        const {component, callback} = options
+        const _component = React.createElement(component,{close:this.close});
+        this.setState({
+            active:true,
+            component:_component,
+            callback:callback
+        })
     }
-    close = () => {
-        this.setState({active:false})
+    close = (data) => {
+       
+        this.setState({active:false});
+        //console.log(data);
+        this.state.callback(data);
     }
 
     render(){
@@ -23,7 +34,7 @@ class Panel extends React.Component{
                 <div className='panel'>
                     <div className='head'>
                         <span className='close' onClick={this.close}>x</span>
-                        <p className="has-text-centered">Children Component</p>
+                        {this.state.component}
                     </div>
                 </div>
             </div>
