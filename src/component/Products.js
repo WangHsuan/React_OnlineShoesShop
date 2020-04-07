@@ -2,9 +2,10 @@ import React, { useState, useEffect } from 'react';
 import axios from '../commons/axios';
 import Product from './Product';
 import ToolBox from './ToolBox';
+import {CSSTransition, TransitionGroup} from 'react-transition-group';
+import Panel from './Panel'
 
 
-const url = `/products`;
 
 export default class Products extends React.Component{
     state = {
@@ -37,20 +38,27 @@ export default class Products extends React.Component{
           });
        
     }
+    toAdd = ()=>{
+        Panel.open();
+    }
     render(){
         return (
             <div>
             <ToolBox search={this.search}/>
                 <div className='products'>
                     <div className='columns is-multiline is-desktop'>
-                       
+                       <TransitionGroup component={null}>
                         {this.state.products.map(product => {
-                            return (    <div className='column is-3' key={product.id}>
+                            return (    <CSSTransition classNames='product-fade' timeout={300} key={product.id}>
+                                        <div className='column is-3' key={product.id}>
                                              <Product product={product}/>
                                         </div>
+                                        </CSSTransition>
                                     )
                         })}
-                    </div>     
+                        </TransitionGroup>
+                    </div> 
+                    <button className="button is-primary add-btn" onClick={this.toAdd}>Add</button>    
                 </div>   
             </div>   
           )
