@@ -8,8 +8,9 @@ class Panel extends React.Component{
         callback: () => {}
     }
     open = options =>{
-        const {component, callback} = options
-        const _component = React.createElement(component,{close:this.close});
+        const {component, callback} = options;
+        const _key = new Date().getTime();
+        const _component = React.createElement(component,{close:this.close, key:_key});
         this.setState({
             active:true,
             component:_component,
@@ -30,10 +31,10 @@ class Panel extends React.Component{
         }
         return(
             <div className={_class[this.state.active]}>
-                <div className="over-layer"></div>
+                <div className="over-layer" onClick={()=>{this.close()}}></div>
                 <div className='panel'>
                     <div className='head'>
-                        <span className='close' onClick={this.close}>x</span>
+                        <span className='close' onClick={()=>{this.close()}}>x</span>
                         {this.state.component}
                     </div>
                 </div>

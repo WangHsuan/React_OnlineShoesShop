@@ -4,12 +4,26 @@ import './index.css';
 import * as serviceWorker from './serviceWorker';
 import '../src/css/app.scss';
 import '../src/css/style.scss';
-import Router from './Router'
+import Router from './Router';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 ReactDOM.render(
-  <React.StrictMode>
+  <div>
+  <ToastContainer
+      position="top-right"
+      autoClose={5000}
+      hideProgressBar
+      newestOnTop={false}
+      closeOnClick
+      rtl={false}
+      pauseOnVisibilityChange
+      draggable
+      pauseOnHover
+  />
     <Router />
-  </React.StrictMode>,
+  </div>
+  ,
   document.getElementById('root')
 );
 
