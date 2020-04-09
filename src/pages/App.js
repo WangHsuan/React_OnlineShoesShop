@@ -1,13 +1,13 @@
 import React from 'react';
-import Header from '../component/Header'
+import Header from '../component/Header';
 import Products from "../component/Products";
+import Layout from '../Layout';
 
 const App = () => {
     return (
-        <div>
-        <Header/>
-        <Products/>
-        </div>
+        <Layout>
+            <Products/>
+        </Layout>
     )
 }
 
