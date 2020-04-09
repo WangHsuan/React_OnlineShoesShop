@@ -5,6 +5,7 @@ import Products from './component/Products';
 import Login from './pages/Login';
 import NotFound from './pages/NotFound';
 import App from './pages/App';
+import  Cart from './pages/Cart';
 import {
   BrowserRouter,
   Switch,
@@ -17,6 +18,7 @@ export default function Router () {
     <Switch>
       <Route path="/" exact component={App} />
       <Route path="/login" component={Login} />
+      <Route path="/cart" component={Cart} />
       <Route component={NotFound} />
     </Switch>
   </BrowserRouter>)

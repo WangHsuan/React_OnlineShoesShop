@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import {withRouter} from 'react-router-dom';
 
 function ToolBox (props){
     const [searchText, setsearchText] = useState('');
@@ -13,6 +14,10 @@ function ToolBox (props){
         e.preventDefault();
         setsearchText('');
         props.search('');
+    }
+
+    const goCart = () => {
+        props.history.push('/cart')
     }
     
         return(
@@ -37,13 +42,14 @@ function ToolBox (props){
                 </div>
             </div>
             </div>
-            <div to="/cart" className="cart-box" >
+            <div  to="/cart" className="cart-box" onClick={goCart}>
                 <i className="fas fa-shopping-cart"></i>
                 <span className="cart-num">({props.cartNum})</span>
-            </div>   
+            </div>
+            
         </div>
         )
     
 }
 
-export default ToolBox;
+export default withRouter(ToolBox);
