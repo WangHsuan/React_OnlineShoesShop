@@ -11,8 +11,10 @@ import AddInventory from './AddInventory';
 export default class Products extends React.Component{
     state = {
         products:[],
-        sourceProducts:[]
+        sourceProducts:[],
+        cartNum:0
     }
+
     componentDidMount() {
         axios.get('/products').then(response => {
           this.setState({
@@ -20,6 +22,7 @@ export default class Products extends React.Component{
             sourceProducts: response.data
           });
         });
+        this.updateCartNum();
         
       }
 
@@ -60,17 +63,59 @@ export default class Products extends React.Component{
             sourceProducts:_sProducts
         })
     }
+    update = product =>{
+        const _products = [...this.state.products];
+        //update
+        const _index = _products.findIndex(p=>p.id === product.id)
+        _products.splice(_index,1,product)
+        const _sProducts = [...this.state.sourceProducts];
+        const _sIndex = _sProducts.findIndex(p=>p.id === product.id)
+        _sProducts.splice(_sIndex,1,product)
+
+        this.setState({
+            products:_products,
+            sourceProducts:_sProducts
+        })
+    }
+    delete = id => {
+        const _products = this.state.products.filter(p => p.id !== id);
+        const _sProducts = this.state.sourceProducts.filter(p=>p.id !== id)
+        this.setState({
+            products : _products,
+            sourceProducts: _sProducts
+        })
+    }
+    updateCartNum = async () =>{
+        const cartNum = await this.initCartNum();
+        this.setState({
+            cartNum:cartNum
+        })
+    }
+
+    initCartNum = async () => {
+        const res = await axios.get('/carts')
+        const carts = res.data || [];
+        const cartNum = carts
+                        .map(cart=>cart.mount)
+                        .reduce((a,value) => a + value, 0)
+        return cartNum
+    }
     render(){
         return (
             <div>
-            <ToolBox search={this.search}/>
+            <ToolBox search={this.search} cartNum={this.state.cartNum}/>
                 <div className='products'>
                     <div className='columns is-multiline is-desktop'>
                        <TransitionGroup component={null}>
                         {this.state.products.map(product => {
                             return (    <CSSTransition classNames='product-fade' timeout={300} key={product.id}>
                                         <div className='column is-3' key={product.id}>
-                                             <Product product={product}/>
+                                             <Product 
+                                                product={product}
+                                                update={this.update} 
+                                                delete={this.delete}
+                                                updateCartNum={this.updateCartNum}
+                                                />
                                         </div>
                                         </CSSTransition>
                                     )

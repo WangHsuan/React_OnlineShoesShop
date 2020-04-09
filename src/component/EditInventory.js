@@ -33,12 +33,21 @@ class EditInventory extends React.Component{
         e.preventDefault();
         const product = {...this.state}
         //console.log(product)
-        axios.post('products',product).then(res=>{
+        axios.put(`products/${this.state.id}`,product).then(res=>{
             console.log(res.data);
             this.props.close(res.data);
-            toast.success('Add Success')
+            toast.success('Edit Success')
         })
     }
+
+    onDelete = (product) =>{
+      axios.delete(`products/${this.state.id}`,product).then(res=>{
+        this.props.deleteProduct(this.state.id)
+        this.props.close();
+        toast.success('Edit Success')
+    })
+    }
+
     showToast = () =>{
         toast.info('info')
     }
@@ -113,6 +122,13 @@ class EditInventory extends React.Component{
               <div className="field is-grouped is-grouped-centered">
                 <div className="control">
                   <button className="button is-link">Submit</button>
+                </div>
+                <div className="control">
+                  <button 
+                    className="button is-danger" 
+                    type='button'
+                    onClick={this.onDelete}
+                    >Delete</button>
                 </div>
                 <div className="control">
                   <button

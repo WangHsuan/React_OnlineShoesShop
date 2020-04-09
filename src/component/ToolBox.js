@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 
 function ToolBox (props){
     const [searchText, setsearchText] = useState('');
+   
     const handleChange = (e) =>{
         e.preventDefault();
         const value = e.target.value
@@ -13,6 +14,7 @@ function ToolBox (props){
         setsearchText('');
         props.search('');
     }
+    
         return(
             <div className='tool-box'>
             <div className='logo-text'> Store</div>
@@ -37,7 +39,7 @@ function ToolBox (props){
             </div>
             <div to="/cart" className="cart-box" >
                 <i className="fas fa-shopping-cart"></i>
-                <span className="cart-num">(0)</span>
+                <span className="cart-num">({props.cartNum})</span>
             </div>   
         </div>
         )
