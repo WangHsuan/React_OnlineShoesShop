@@ -1,14 +1,34 @@
-import React from 'react';
+import React, {useState, useMemo} from 'react';
 import { formatPrice } from '../commons/helper';
-
+import axios from '../commons/axios'
 
 const CartItem = (props) => {
-    const {name, image, price ,mount} = props.cart || [];
-    const sumPrice = formatPrice(mount * parseInt(price))
+    const[mount, setMount] = useState(props.cart.mount);
+    const {id,name, image, price } = props.cart || [];
+    const sumPrice = useMemo(()=>{
+        return formatPrice(mount * parseInt(price))
+    },[mount,price])
+
+    const handleChange = e => {
+        const _mount = parseInt(e.target.value);
+        setMount(_mount)
+        const newCart = {
+            ...props.cart,
+            mount:_mount
+        }
+        axios.put(`/carts/${id}`,newCart).then(res=>{
+            props.updateCart(newCart)
+        });
+    };
+    const deleteCart = () => {
+        axios.delete(`/carts/${id}`).then(res => {
+            props.deleteCart(props.cart)
+        })
+    }
 
     return(
         <div className='columns is-vcentered'>
-            <div className='column is-narrow'>
+            <div className='column is-narrow' onClick={deleteCart}>
                 <span className='close'>X</span>
             </div>
             <div className='column is-narrow'>
@@ -19,7 +39,13 @@ const CartItem = (props) => {
                 <span className='price'>{formatPrice(price)}</span>
             </div>
             <div className='column'>
-                <input className='input num-input' type='number' defaultValue={mount}/>
+                <input 
+                className='input num-input' 
+                type='number' 
+                value={mount} 
+                onChange={handleChange}
+                min={1}
+                />
             </div>
             <div className='column'>
                 <span className='sum-price'>{sumPrice}</span>
