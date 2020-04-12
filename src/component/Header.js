@@ -1,12 +1,26 @@
 import React from 'react';
 import {
-    BrowserRouter as Router,
-    Switch,
-    Route,
-    Link
+    Link,
+    withRouter
   } from "react-router-dom";
+import Panel from '../component/Panel'
+import UserProfile from '../component/UserProfile';
 
-export default function Header(props){
+function Header(props){
+    const toProfile = () => {
+        Panel.open({
+            component:UserProfile,
+            props:{
+                user:props.user
+            },
+            callback: data => {
+                console.log(data);
+                if(data ==='logout'){
+                    props.history.go(0);
+                }
+            }
+        })
+    }
     return(
         
         <div className='header'>
@@ -15,15 +29,15 @@ export default function Header(props){
                 <Link to="/">Home</Link>
                 </div>
                 <div className='end'>
-                {props.nickname?(
-                    <span className='nickname'>
+                {props.user.nickname?(
+                    <span className='nickname' onClick={toProfile}>
                     <i className="far fa-user"></i>
-                    {props.nickname}
+                    {props.user.nickname}
                     </span>
                     ):(
                         <React.Fragment>
                             <Link to="/Login">Login</Link>
-                            <a href='#'>Register</a>
+                            <Link to="/Register">Register</Link>
                         </React.Fragment>
                     )}
                     
@@ -34,3 +48,5 @@ export default function Header(props){
 </div>
 )
 }
+
+export default withRouter(Header);

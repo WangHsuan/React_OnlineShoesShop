@@ -7,7 +7,7 @@ import '../src/css/style.scss';
 import Router from './Router';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-
+import './commons/auth';
 ReactDOM.render(
   <div>
   <ToastContainer

@@ -18,7 +18,8 @@ class Panel extends React.Component{
         const _key = new Date().getTime();
         const _component = React.createElement(component,{
             ...props,
-            close:this.close, key:_key});
+            close:this.close,
+            key:_key});
             
             this.setState({
             active:true,
