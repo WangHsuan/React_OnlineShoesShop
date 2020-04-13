@@ -6,87 +6,6 @@ import axios from '../commons/axios';
 import {toast} from 'react-toastify';
 import {withRouter} from 'react-router-dom'
 
-// function Product(props){
-
-//     const {id, name,tags,image,price,status} = props.product;
-//     const _pClass ={
-//         available:'product',
-//         unavailable:'product out-stock'
-//     }
-//     const toEdit = () =>{
-//         Panel.open({
-//             component:EditInventory,
-//             props:{
-//                 product: props.product,
-//                 deleteProduct:props.delete
-//             },
-//             callback: (data) =>{
-//                 console.log(data);
-//                 if(data){
-//                     props.update(data);
-//                 }
-//             }
-//         }
-//         )
-//     }
-//     const addCart = async () => {
-//         try {
-
-//             const res = await axios.get(`/carts?productId=${id}`);
-//             const carts = res.data;
-//             console.log(carts);
-//             if(carts && carts.length>0){
-//                 const cart = carts[0];
-//                 cart.mount+=1;
-//                 await axios.put(`/carts/${cart.id}`,cart)
-//             }else{
-//                 const cart = {
-//                     productId: id,
-//                     name,
-//                     image,
-//                     price,
-//                     mount:1
-//                 }
-//                 await axios.post('/carts',cart)
-//             }
-//             toast.success('Add Cart Success');
-//             //this.props.updateCartNum();
-            
-//         } catch (error) {
-//             toast.error('Add Cart Fail')
-//         }
-        
-       
-//     }
-
-//         return(
-//             <div className={_pClass[status]}>
-//                     <div className='p-content'>
-//                     <div className='p-head has-text-right' onClick={toEdit}>
-//                         <span className='icon edit-btn'>
-//                         <i className='fas fa-sliders-h'></i>
-//                         </span>
-//                     </div>
-//                     <div className='img-wrapper'>
-//                         <div className="out-stock-text">Out OF Stock</div>
-//                         <figure className='image is4by3'>
-//                             <img src={image} alt='shoes' />
-//                         </figure>
-//                     </div>
-//                 </div>
-//                 <p className='p-tags'>{tags}</p>
-//                 <p className='p-name'>{name}</p>
-//              <div className='p-footer'>
-//                 <p className='price'>{formatPrice(price)}</p>
-//                 <button className='add-cart' disabled={status === 'unavailable'} onClick={addCart}>
-//                     <i className='fa fa-shopping-cart'></i>
-//                     <i className='fa fa-exclamation'></i>
-//                 </button>
-//              </div>
-//             </div>
-//         )
-  
-// }
 
 class Product extends React.Component {
 
@@ -113,6 +32,7 @@ class Product extends React.Component {
         return;
       }
       try {
+        const user = global.auth.getUser()||{};
         const { id, name, image, price } = this.props.product;
         const res = await axios.get(`/carts?productId=${id}`);
         const carts = res.data;
@@ -127,6 +47,7 @@ class Product extends React.Component {
             image,
             price,
             mount: 1,
+            userId:user.email
           };
           await axios.post('/carts', cart);
         }
