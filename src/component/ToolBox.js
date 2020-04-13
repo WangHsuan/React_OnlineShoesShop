@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import {withRouter} from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 function ToolBox (props){
     const [searchText, setsearchText] = useState('');
@@ -17,12 +18,17 @@ function ToolBox (props){
     }
 
     const goCart = () => {
+        if(!global.auth.isLogin()){
+            props.history.push('/login');
+            toast.info('Please Login First');
+            return;
+        }
         props.history.push('/cart')
     }
     
         return(
             <div className='tool-box'>
-            <div className='logo-text'> Store</div>
+            <div className='logo-text'> HOJA</div>
 
             <div className="search-box">
             <div className="field has-addons">

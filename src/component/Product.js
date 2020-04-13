@@ -3,7 +3,8 @@ import {formatPrice} from '../commons/helper';
 import  Panel  from "./Panel";
 import EditInventory from "./EditInventory";
 import axios from '../commons/axios';
-import {toast} from 'react-toastify'
+import {toast} from 'react-toastify';
+import {withRouter} from 'react-router-dom'
 
 // function Product(props){
 
@@ -88,6 +89,7 @@ import {toast} from 'react-toastify'
 // }
 
 class Product extends React.Component {
+
     toEdit = () => {
       Panel.open({
         component: EditInventory,
@@ -104,7 +106,12 @@ class Product extends React.Component {
     };
   
     addCart = async () => {
-      
+
+      if(!global.auth.isLogin()){
+        this.props.history.push('/login');
+        toast.info('Please Login First');
+        return;
+      }
       try {
         const { id, name, image, price } = this.props.product;
         const res = await axios.get(`/carts?productId=${id}`);
@@ -131,6 +138,18 @@ class Product extends React.Component {
     };
   
   
+    renderManagerBtn = () => {
+      const user = global.auth.getUser() || {};
+      if(user.type === 1){
+        return(
+          <div className='p-head has-text-right' onClick={this.toEdit}>                         
+            <span className='icon edit-btn'>
+              <i className='fas fa-sliders-h'></i>
+            </span>
+          </div>
+        )}
+    }
+
     render() {
       const { name, image, tags, price, status } = this.props.product;
       const _pClass = {
@@ -140,11 +159,7 @@ class Product extends React.Component {
       return (
         <div className={_pClass[status]}>
           <div className="p-content">
-          <div className='p-head has-text-right' onClick={this.toEdit}>                         
-          <span className='icon edit-btn'>
-            <i className='fas fa-sliders-h'></i>
-          </span>
-         </div>
+          {this.renderManagerBtn()}
             <div className="img-wrapper">
               <div className="out-stock-text">Out Of Stock</div>
               <figure className="image is-4by3">
@@ -171,4 +186,4 @@ class Product extends React.Component {
   }
   
 
-export default Product;
+export default withRouter(Product);

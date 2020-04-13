@@ -8,7 +8,8 @@ import { TransitionGroup, CSSTransition } from 'react-transition-group';
 const Cart = () => {
     const [carts, setCarts] = useState([])
     useEffect(()=>{
-        axios.get('/carts').then(res => setCarts(res.data))
+        const user = global.auth.getUser()||{};
+        axios.get(`/carts?userId=${user.email}`).then(res => setCarts(res.data))
     },[])
 
     const totalPrice = useMemo(() => {
